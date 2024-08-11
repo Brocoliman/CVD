@@ -11,7 +11,9 @@ import torch
 [2]: force remake lut
 [3]: make image
 [4]: image path
-[5]: save path
+
+
+python sim/fast.py 0.85 no make_image c:\Lucas\Project2024-2025\Code\sim\in\image.png
 """
 
 #################### Setup
@@ -20,7 +22,7 @@ lvl = float(sys.argv[1])
 make_lut = sys.argv[2] == 'make_lut'
 make_image = sys.argv[3] == 'make_image'
 image_path = sys.argv[4]
-save_path = sys.argv[5] if len(sys.argv)>=6 else "sim/out/"+image_path.split('/')[-1]
+save_path = os.path.join("sim", "out", 'image.png')
 
 dim = 17
 
