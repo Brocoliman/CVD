@@ -1,11 +1,12 @@
 import torch
 from torch import nn
 
-class VAE(nn.Module):
+class CVDModel(nn.Module):
     def __init__(self, img_dim=256):
-        super(VAE, self).__init__()
+        super(CVDModel, self).__init__()
 
         self.num_dist = 16
+        self.pprp = 16*62*62
         self.pre_reparam = 512
         self.img_dim = img_dim
 
@@ -13,16 +14,16 @@ class VAE(nn.Module):
         self.encode_seq = nn.Sequential(
             nn.Upsample(size=(img_dim,img_dim),mode='bilinear'),
 
-            nn.Conv2d(in_channels=1, out_channels=6, kernel_size=3),  # -> 6x[d-2]^2
+            nn.Conv2d(in_channels=3, out_channels=6, kernel_size=3),  # 3,256,256 -> 6,254,254
             nn.ReLU(),
-            nn.MaxPool2d(2, 2),  # -> 6x[(d-2)/2]^2
+            nn.MaxPool2d(2, 2),  # -> 6,127,127
             
-            nn.Conv2d(6, 16, kernel_size=3),  # -> 16x[(d-6)/2]^2
+            nn.Conv2d(6, 16, kernel_size=3),  # -> 16,125,125
             nn.ReLU(),
-            nn.MaxPool2d(2, 2),  # -> 16x[(d-6)/4]^2
+            nn.MaxPool2d(2, 2),  # -> 16,62,62
             
             nn.Flatten(),
-            nn.Linear(16 * ((img_dim-4)/4)**2, self.pre_reparam),  # -> prp
+            nn.Linear(self.pprp, self.pre_reparam),  # -> prp
             nn.ReLU(),
         )
 
@@ -34,16 +35,16 @@ class VAE(nn.Module):
             nn.Linear(self.num_dist, self.pre_reparam),  # -> prp
             nn.ReLU(),
             
-            nn.Linear(self.pre_reparam, 16 * ((img_dim-4)/4)**2), # -> 6x[(d-6)/4]^2
+            nn.Linear(self.pre_reparam, self.pprp), # -> 16,62,62
             nn.ReLU(),
         )
         self.decode_seq2 = nn.Sequential(
-            nn.Upsample(size=11),  # 16x11x11
-            nn.ConvTranspose2d(16, 6, kernel_size=3),  # -> 6x13x13
+            nn.Upsample(size=125),  # -> 16,125,125
+            nn.ConvTranspose2d(16, 6, kernel_size=3),  # -> 6,127,127
             nn.ReLU(),
             
-            nn.Upsample(scale_factor=2),  # -> 6x26x26
-            nn.ConvTranspose2d(6, 1, kernel_size=3),  # -> 1x28x28
+            nn.Upsample(size=254),  # -> 6,254,254
+            nn.ConvTranspose2d(6, 3, kernel_size=3),  # -> 3,256,256
             nn.Sigmoid(),
         )
 
@@ -58,7 +59,7 @@ class VAE(nn.Module):
 
     def decode(self, z):
         h = self.decode_seq1(z)
-        h = h.view(-1, 16, 5, 5)
+        h = h.view(-1, 16, 62, 62)
         return self.decode_seq2(h)
 
     def forward(self, x):
