@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from tqdm import tqdm  # For progress bar
-from model import CVDModel
+from model import CVDVAE
 from dataset import get_image2image_dataloaders
 
 # Training function
@@ -87,7 +87,7 @@ if __name__ == "__main__":
     learning_rate = 0.001
 
     # Instantiate model, criterion (loss function), and optimizer
-    model = CVDModel()
+    model = CVDVAE()
     criterion = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 

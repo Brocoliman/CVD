@@ -1,7 +1,7 @@
 import torch
 import torchvision.transforms as transforms
 import os
-from model import CVDModel
+from model import CVDVAE
 from dataset import get_image2image_dataloaders
 from fast import make_image
 
@@ -13,7 +13,7 @@ lutdir = os.path.join(rootdir, 'sim', 'lut')
 imgdir = os.path.join(rootdir, 'view')
 
 print(":a")
-model = CVDModel()
+model = CVDVAE()
 model.load_state_dict(torch.load(os.path.join(modeldir, 'model24.pth'), weights_only=True))
 print("b")
 

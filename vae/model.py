@@ -1,9 +1,9 @@
 import torch
 from torch import nn
 
-class CVDModel(nn.Module):
+class CVDVAE(nn.Module):
     def __init__(self, img_dim=256):
-        super(CVDModel, self).__init__()
+        super(CVDVAE, self).__init__()
 
         self.num_dist = 16
         self.pprp = 16*62*62
@@ -16,6 +16,8 @@ class CVDModel(nn.Module):
 
             nn.Conv2d(in_channels=3, out_channels=6, kernel_size=3),  # 3,256,256 -> 6,254,254
             nn.ReLU(),
+
+
             nn.MaxPool2d(2, 2),  # -> 6,127,127
             
             nn.Conv2d(6, 16, kernel_size=3),  # -> 16,125,125
