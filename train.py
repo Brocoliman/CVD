@@ -45,8 +45,7 @@ opt = parser.parse_args()
 
 ############################## Setup things ##############################
 
-with open('threshold.txt') as thres_file:
-    threshold = float(thres_file.read())
+threshold = 0.0
 
 def setup_seed(seed):
     torch.manual_seed(seed)

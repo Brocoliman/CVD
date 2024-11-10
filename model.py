@@ -33,7 +33,6 @@ def apply_lut(img, LUT, repeat=False):
     return result
 
 class resnet18_224(nn.Module):
-
     def __init__(self, out_dim=5, aug_test=False):
         super(resnet18_224, self).__init__()
 
