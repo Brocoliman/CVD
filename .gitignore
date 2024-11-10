@@ -1,5 +1,3 @@
-.venv
-dataset1/*
+data/*
 saves/checkpoint/*
 saves/infer/*
-best_model.pth
