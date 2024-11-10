@@ -1,6 +1,5 @@
 .venv
-dataset1
+dataset1/*
 saves/checkpoint/*
 saves/infer/*
-vae/__pycache__
 best_model.pth

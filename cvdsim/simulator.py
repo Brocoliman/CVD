@@ -14,7 +14,7 @@ root = r"/home/brocolimanx/Desktop/Image-Adaptive-3DLUT-master"
 
 sys.path.append(root)
 
-from image_adaptive_lut_evaluation import generator_wrapper
+#from image_adaptive_lut_evaluation import generator_wrapper
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--epoch", type=int, default=563, help="epoch to load the saved checkpoint")
@@ -140,7 +140,7 @@ if __name__ == "__main__":
         #self.LUT, output = self.TrilinearInterpolation(self.LUT, x)
         return result
     def hr_lut(img, dim=17):
-        lines = open('lut3d_rgb.txt').readlines()
+        lines = open(os.path.join(root, 'lut3d_rgb.txt')).readlines()
         buffer = np.zeros((3,dim,dim,dim), dtype=np.float32)
         for i in range(0,dim):
             for j in range(0,dim):
@@ -153,10 +153,10 @@ if __name__ == "__main__":
         LUT = nn.Parameter(torch.from_numpy(buffer)).cuda()
         result = apply_lut(img, LUT)
         return result
-    m = ModalTable(model_functions=[generator_wrapper, generator_wrapper, hr_lut],
-                model_args=[list(), list(), list()],
-                model_kwargs=[{'bin_class':True},{'bin_class':False}, dict()],
-                model_names=['[DaltNET]', '[DaltNET-raw]', '[HR]'],
+    m = ModalTable(model_functions=[hr_lut],
+                model_args=[list()],
+                model_kwargs=[dict()],
+                model_names=['[HR]'],
                 show=True, show_sim=True, show_daltsim=True)
     c = Carousel(opt.library, m)
     c.run()
