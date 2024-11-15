@@ -1,3 +1,4 @@
 data/
-saves/checkpoint/*
-saves/infer/*
+segmentation/__pycache__
+segmentation/saved_images
+segmentation/saved_models

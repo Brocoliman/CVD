@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
-import torchvision.transforms.functional as F
+import torchvision.transforms.functional as TF
+import torch.nn.functional as NF
 
 class DoubleConv(nn.Module):
     """
@@ -57,7 +58,7 @@ class UNET(nn.Module):
         for down in self.downs:
             x = down(x)
             conns.append(x)
-            self.pool(x)
+            x = self.pool(x)
         
         # Bottom
         x = self.bottleneck(x)
@@ -74,7 +75,7 @@ class UNET(nn.Module):
             # If input dims not divisible by 16:
             if x.shape != conn.shape:
                 # resize (x is always equal to or smaller than conn)
-                x = F.resize(x, size=conn.shape[2:]) # HW only
+                x = TF.resize(x, size=conn.shape[2:]) # HW only
 
             # Concatenate
             concat = torch.cat((conn, x), dim=1) # BCHW, add along batch dim
@@ -82,6 +83,7 @@ class UNET(nn.Module):
             # Go right (double conv)
             x = self.ups[idx+1](concat)
         
-        return self.final(x)
+        x = self.final(x)
+        return x # (chan/class:h:w)
     
 
