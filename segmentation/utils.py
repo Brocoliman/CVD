@@ -61,7 +61,7 @@ def check_accuracy(loader, model, device='cuda'):
     model.eval()
 
     with torch.no_grad():
-        for x, y in loader:
+        for x, y, _ in loader:
             x = x.to(device)
             y = y.to(device).unsqueeze(1)
             preds = torch.sigmoid(model(x))

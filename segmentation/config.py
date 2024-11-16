@@ -18,7 +18,7 @@ VAL_MASK_DIR = "data/ADE20K/annotations/validation/"
 FN_FORMAT = ('jpg','png')
 CLASSES = 150
 
-MODEL_NAME = "segmentation/saved_models/ade20k_vB_.tar"
+MODEL_NAME = "segmentation/saved_models/ade20k_vC_.tar"
 
 # Transforms
 train_transform = A.Compose(

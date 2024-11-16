@@ -1,5 +1,2 @@
 __pycache__
-data/
 segmentation/__pycache__
-segmentation/saved_images
-segmentation/saved_models
