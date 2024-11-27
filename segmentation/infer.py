@@ -1,7 +1,7 @@
 import torch
 from config import *
 from utils import load_checkpoint, save_preds_dual, get_loaders
-from model import UNET
+from segmentation.model_UNet import UNET
 
 MODEL_NAME = "segmentation/saved_models/ade20k_vB_1.tar"
 

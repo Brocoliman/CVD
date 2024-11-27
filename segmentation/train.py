@@ -3,7 +3,7 @@ from tqdm import tqdm
 import torch.nn as nn
 import torch.optim as optim
 from config import *
-from model import UNET
+from segmentation.model_UNet import UNET
 from utils import (
     load_checkpoint, save_checkpoint, get_loaders, check_accuracy, save_preds_dual
 )
